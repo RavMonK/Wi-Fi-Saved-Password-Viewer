@@ -31,7 +31,7 @@ namespace WiFiSavedPassword
                 int i = 1;
                 foreach (var item in GetSSID())
                 {
-
+                    DisabledButton();
                     listBox1.Items.Add(item + " | " + await GetInfomation(item, true));
                     toolStripStatusLabel1.Text = i.ToString() + "/" + ssid.Count;
                     toolStripProgressBar1.Value = i++;
@@ -41,6 +41,10 @@ namespace WiFiSavedPassword
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+               EnabledButton();
             }
 
             
@@ -137,11 +141,17 @@ namespace WiFiSavedPassword
         {
             try
             {
+                DisabledButton();
                 textBox1.Text = await GetInfomation(listBox1.Items[listBox1.SelectedIndex].ToString().Split('|')[0].Trim(), false);
+            
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                EnabledButton();
             }
         }
 
@@ -163,6 +173,7 @@ namespace WiFiSavedPassword
                 StreamWriter file = new StreamWriter(saveFileDialog1.FileName);
                 foreach (var item in listBox1.Items)
                 {
+                    DisabledButton();
                     await file.WriteLineAsync(item.ToString());
                 }
                 
@@ -172,6 +183,10 @@ namespace WiFiSavedPassword
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                EnabledButton();
             }
         }
 
@@ -191,6 +206,7 @@ namespace WiFiSavedPassword
                     return;
                 }
                 StreamWriter file = new StreamWriter(saveFileDialog1.FileName);
+                DisabledButton();
                 await file.WriteAsync(textBox1.Text);
                 file.Close();
                 SystemSounds.Beep.Play();
@@ -198,6 +214,10 @@ namespace WiFiSavedPassword
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                EnabledButton();
             }
         }
 
@@ -212,6 +232,20 @@ namespace WiFiSavedPassword
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        private void DisabledButton()
+        {
+            button1.Enabled = false;
+            button2.Enabled = false;
+            button3.Enabled = false;
+        }
+
+        private void EnabledButton()
+        {
+            button1.Enabled = true;
+            button2.Enabled = true;
+            button3.Enabled = true;
         }
 
     }
